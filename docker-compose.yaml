@@ -1,20 +1,21 @@
 services:
-  postgres:
-    image: postgres:16
-    container_name: nest-js-catch-up-postgres
+  mysql:
+    image: mysql:8.0
+    container_name: nest-js-catch-up-mysql
     ports:
-      - "5432:5432"
+      - "3306:3306"
     environment:
-      POSTGRES_USER: postgres
-      POSTGRES_PASSWORD: password
-      POSTGRES_DB: nest_app
+      MYSQL_ROOT_PASSWORD: password
+      MYSQL_DATABASE: todoappdb
+      MYSQL_USER: testuser
+      MYSQL_PASSWORD: password
     volumes:
-      - postgres_data:/var/lib/postgresql/data
+      - mysql_data:/var/lib/mysql
     healthcheck:
-      test: ["CMD-SHELL", "pg_isready -U postgres -d nest_app"]
+      test: ["CMD", "mysqladmin", "ping", "-h", "localhost", "-ppassword"]
       interval: 5s
       timeout: 5s
       retries: 5
 
 volumes:
-  postgres_data:
+  mysql_data:
